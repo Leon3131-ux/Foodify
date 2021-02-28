@@ -1,24 +1,6 @@
-# foodify.web
 
-## Project setup
-```
-npm install
-```
+und zum packages update/installire: npm install
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Leon start Code: npm run dev-leon
+Noah start Code: npm run dev-noah
+Severin start Code: npm run dev-sse
