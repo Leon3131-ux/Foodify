@@ -1,5 +1,8 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <v-main>
+  <v-app-bar app color="primary">What is Foodify?</v-app-bar>
+    <v-container>
+
+    </v-container>
+  </v-main>
 </template>
