@@ -5,12 +5,15 @@ import com.foodifyinc.demo.repository.PermissionRepository;
 import com.foodifyinc.demo.repository.RoleRepository;
 import com.foodifyinc.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RequiredArgsConstructor
+@Component
 public class Init {
 
     private final PermissionRepository permissionRepository;
@@ -18,13 +21,18 @@ public class Init {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Value("${db.initialize}")
+    private boolean initialize;
+
     @PostConstruct
     public void init(){
-        Set<Permission> userPermissions = loadUserPermissions();
-        Set<Permission> adminPermissions = loadAdminPermissions();
-        Role userRole = loadUserRole(userPermissions);
-        Role adminRole = loadAdminRole(adminPermissions);
-        loadTestUsers(userRole, adminRole);
+        if(initialize){
+            Set<Permission> userPermissions = loadUserPermissions();
+            Set<Permission> adminPermissions = loadAdminPermissions();
+            Role userRole = loadUserRole(userPermissions);
+            Role adminRole = loadAdminRole(adminPermissions);
+            loadTestUsers(userRole, adminRole);
+        }
     }
 
     private Set<Permission> loadUserPermissions(){
