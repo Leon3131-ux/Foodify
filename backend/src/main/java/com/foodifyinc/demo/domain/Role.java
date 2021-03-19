@@ -19,7 +19,7 @@ public class Role extends AbstractEntity{
     @Column(unique = true, nullable = false)
     private RoleName name;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Permission> permissions;
 
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
@@ -18,12 +19,12 @@ import java.util.Set;
 public class User extends AbstractEntity{
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
 
