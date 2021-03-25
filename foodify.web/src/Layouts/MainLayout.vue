@@ -5,13 +5,13 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn
-            v-for="item in nav"
-            color="secondary"
-            :key="item.icon"
-            :to="item.to"
-            :title="item.title"
-            flat
-        >{{ item.text }}</v-btn>
+          v-for="item in nav"
+          :key="item.text"
+          plain
+          :to="item.to"
+          :title="item.title"
+          >{{ item.text }}</v-btn
+        >
       </v-toolbar-items>
     </v-app-bar>
 
@@ -22,7 +22,6 @@
 <script>
 export default {
   name: "MainLayout",
-  components: {},
   data() {
     return {
       nav: [
@@ -43,8 +42,8 @@ export default {
           icon: "",
           text: "About",
           to: "About",
-        }
-      ]
+        },
+      ],
     };
   },
 };

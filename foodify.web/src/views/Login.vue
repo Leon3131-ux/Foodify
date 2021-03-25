@@ -1,28 +1,43 @@
 <template>
   <v-main>
-    {{ test }}
-    {{ $t("failed") }}
-    <form-wrapper :validator="$v">
-      <form-group name="username">
-        <v-text-field
-          v-model="username"
-          label="Username"
-          slot-scope="{ attrs }"
-          v-bind="attrs"
-        /><br />
-      </form-group>
+    <v-container>
+      <h1>{{ $t("Login") }}</h1>
+      <form-wrapper :validator="$v">
+        <form-group name="username">
+          <v-text-field
+            v-model="username"
+            label="Username"
+            slot-scope="{ attrs }"
+            v-bind="attrs"
+          /><br />
+        </form-group>
 
-      <form-group name="password">
-        <v-text-field
-          v-model="password"
-          type="password"
-          label="Password"
-          slot-scope="{ attrs }"
-          v-bind="attrs"
-        />
-      </form-group>
-    </form-wrapper>
-    <v-btn @click="submitLogin">login</v-btn>
+        <form-group name="password">
+          <v-text-field
+            v-model="password"
+            type="password"
+            label="Password"
+            slot-scope="{ attrs }"
+            v-bind="attrs"
+          />
+        </form-group>
+      </form-wrapper>
+      <v-btn @click="submitLogin">login</v-btn>
+      <v-alert
+        :value="alert"
+        color="negative"
+        border="top"
+        icon="mdi-home"
+        transition="scale-transition"
+      >
+        Phasellus tempus. Fusce ac felis sit amet ligula pharetra condimentum.
+        In dui magna, posuere eget, vestibulum et, tempor auctor, justo.
+        Pellentesque posuere. Curabitur ligula sapien, tincidunt non, euismod
+        vitae, posuere imperdiet, leo. Phasellus nec sem in justo pellentesque
+        facilisis. Phasellus magna. Cras risus ipsum, faucibus ut, ullamcorper
+        id, varius ac, leo. In hac habitasse platea dictumst. Praesent turpis.
+      </v-alert>
+    </v-container>
   </v-main>
 </template>
 
@@ -30,7 +45,7 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 export default {
-  name: "Home",
+  name: "Login",
   validations: {
     password: {
       required,
@@ -40,23 +55,12 @@ export default {
     },
   },
   components: {},
-  async mounted() {
-    this.$store.dispatch("auth/login", {
-      jwt: "token",
-    });
-    let res = await axios.get("test", {
-      params: {
-        id: 1,
-      },
-    });
-    if (res.status === 200) {
-      console.log(res.data);
-    }
-  },
+  async mounted() {},
   data() {
     return {
       password: "",
       username: "",
+      alert: false,
     };
   },
   methods: {
@@ -65,18 +69,14 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      let res = await axios.post("/User/Login", {
-        Username: this.username,
-        Password: this.password,
+      let res = await axios.post("/Login", {
+        username: this.username,
+        password: this.password,
       });
       if (res.status === 200) {
         const token = res.data.token;
         if (token == undefined) {
-          Notify.create({
-            position: "top",
-            type: "negative",
-            message: "login failed",
-          });
+          this.alert = true;
           this.password = "";
           this.$v.$reset();
           return;
@@ -85,12 +85,13 @@ export default {
         this.$store.dispatch("auth/login", {
           jwt: token,
         });
-        Notify.create({
-          position: "top",
-          type: "positive",
-          message: "login sucssesd",
-        });
         this.$router.push("/ReferenzenEdit");
+      } else {
+        console.log("alert");
+        this.alert = true;
+        this.password = "";
+        this.$v.$reset();
+        return;
       }
     },
   },
