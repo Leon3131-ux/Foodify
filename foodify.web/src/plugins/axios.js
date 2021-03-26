@@ -5,11 +5,20 @@ import Vue from 'vue';
 const instance = axios.create({
   baseURL : process.env.VUE_APP_API_URL,
   headers:{
-    'authorization': 'Bearer ' +  store.getters["auth/JWT"]
+    'Authorization': 'Bearer ' +  store.getters["auth/JWT"]
   }
 })
+
+instance.interceptors.request.use(request => {
+  
+  if(request.headers.Authorization == "Bearer null"){
+    delete request.headers["Authorization"];
+  }
+
+  return request
+})
+
 Vue.prototype.$axios = instance
 window.axios = instance
-Vue.use(instance);
 
 export default instance

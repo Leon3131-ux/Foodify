@@ -6,12 +6,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
     component: () => import('../Layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('../views/Home.vue') },
+      { path: '',name:"Home", component: () => import('../views/Home.vue') },
       { path: 'about', component: () => import('../views/About.vue') },
-      { path: 'Login', component: () => import('../views/Login.vue') }
+      { path: 'Login', component: () => import('../views/Login.vue') },
+    ]
+  },
+  {
+    path: '/',
+    component: () => import('../Layouts/AuthLayout.vue'),
+    children: [
+      { path: 'Dashboard', component: () => import('../views/Dashboard.vue') },
+      { path: 'Kuehlschrank', component: () => import('../views/kuehlschrank.vue') },
     ]
   },
 

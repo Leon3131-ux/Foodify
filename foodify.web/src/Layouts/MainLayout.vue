@@ -1,7 +1,7 @@
 <template>
   <v-layout view="lHh Lpr lFf">
     <v-app-bar app color="primary" dark>
-      <v-toolbar-title>Desktop Menu</v-toolbar-title>
+      <v-toolbar-title>{{ $t("Foodify") }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn
@@ -30,12 +30,6 @@ export default {
           icon: "",
           text: "login",
           to: "login",
-        },
-        {
-          title: "anmelden",
-          icon: "",
-          text: "anmelden",
-          to: "anmelden",
         },
         {
           title: "About",

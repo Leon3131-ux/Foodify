@@ -45,7 +45,6 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 export default {
-  name: "Login",
   validations: {
     password: {
       required,
@@ -69,12 +68,12 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      let res = await axios.post("/Login", {
+      let res = await axios.post("/login", {
         username: this.username,
         password: this.password,
       });
       if (res.status === 200) {
-        const token = res.data.token;
+        const token = res.data;
         if (token == undefined) {
           this.alert = true;
           this.password = "";
@@ -85,9 +84,8 @@ export default {
         this.$store.dispatch("auth/login", {
           jwt: token,
         });
-        this.$router.push("/ReferenzenEdit");
+        this.$router.push("/Dashboard");
       } else {
-        console.log("alert");
         this.alert = true;
         this.password = "";
         this.$v.$reset();

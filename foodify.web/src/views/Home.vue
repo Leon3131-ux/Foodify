@@ -1,9 +1,5 @@
 <template>
-  <v-main>
-
-    <v-btn @click="submitLogin">login</v-btn>
-    <v-btn @click="submitLogin">Anmelden</v-btn>
-  </v-main>
+  <v-main> </v-main>
 </template>
 
 
@@ -20,11 +16,10 @@ export default {
     },
   },
   components: {},
-  async mounted() {
-  },
+  async mounted() {},
   data() {
+    return {};
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>

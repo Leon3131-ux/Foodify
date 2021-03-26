@@ -4,6 +4,10 @@
 export default {
   failed: 'OK de',
   success: 'sdfg',
+  Login:"Login",
+  Foodify:"Foodify",
+  Home:"Home",
+  kuehlschrank:"kühlschrank",
   validation: {
     required: 'Erforderlich',
     email: 'Keine gültige E-Mail',
