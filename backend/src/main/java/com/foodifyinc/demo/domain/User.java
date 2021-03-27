@@ -22,6 +22,9 @@ public class User extends AbstractEntity{
     private String username;
 
     @Column(nullable = false)
+    private String Email;
+
+    @Column(nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

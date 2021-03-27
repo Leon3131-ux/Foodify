@@ -23,6 +23,7 @@
         </form-group>
       </form-wrapper>
       <v-btn @click="submitLogin">login</v-btn>
+      <v-btn type="a" to="Register">Register</v-btn>
       <v-alert
         :value="alert"
         color="negative"
