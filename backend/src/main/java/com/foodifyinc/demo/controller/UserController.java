@@ -29,6 +29,7 @@ public class UserController {
         User user = userConverter.toEntity(registerDto);
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
 }
