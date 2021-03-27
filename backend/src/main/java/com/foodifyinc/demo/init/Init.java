@@ -77,8 +77,8 @@ public class Init {
     }
 
     private void loadTestUsers(Role userRole, Role adminRole){
-        User userUser = new User("test", bCryptPasswordEncoder.encode("test"), Collections.singleton(userRole));
-        User adminUser = new User("admin", bCryptPasswordEncoder.encode("admin"), Collections.singleton(adminRole));
+        User userUser = new User("test", "test@test.com", bCryptPasswordEncoder.encode("test"), Collections.singleton(userRole));
+        User adminUser = new User("admin", "admin@admin.com", bCryptPasswordEncoder.encode("admin"), Collections.singleton(adminRole));
 
         userRepository.save(userUser);
         userRepository.save(adminUser);
