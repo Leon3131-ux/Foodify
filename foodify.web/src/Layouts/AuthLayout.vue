@@ -30,12 +30,12 @@ export default {
           text: this.$t("kuehlschrank"),
           to: "Kuehlschrank",
         },
-        {
-          icon: "",
-          text: this.$t("Admin"),
-          to: "Admin/Dashboard",
-          permissions: ["ADMINISTRATOR"],
-        },
+        // {
+        //   icon: "",
+        //   text: this.$t("Admin"),
+        //   to: "Admin/Dashboard",
+        //   permissions: ["ADMINISTRATOR"],
+        // },
       ];
       for (var id in nav) {
         var item = nav[id];
@@ -64,15 +64,15 @@ export default {
     };
   },
   mounted() {
-    var jwt = this.$store.getters["JWT"];
-    if (jwt !== null) {
-      var base64Url = jwt.split(".")[1];
-      var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      var token = JSON.parse(window.atob(base64));
-      this.permissions = token.permissions;
-    } else {
-      this.logout();
-    }
+    // var jwt = this.$store.getters["JWT"];
+    // if (jwt !== null) {
+    //   var base64Url = jwt.split(".")[1];
+    //   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    //   var token = JSON.parse(window.atob(base64));
+    //   this.permissions = token.permissions;
+    // } else {
+    //   this.logout();
+    // }
   },
 };
 </script>

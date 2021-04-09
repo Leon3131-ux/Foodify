@@ -20,17 +20,17 @@ const routes = [
     
     component: () => import('../Layouts/AuthLayout.vue'),
     children: [
-      { path: 'Dashboard', component: () => import('../views/Dashboard.vue') },
-      { path: 'Kuehlschrank', component: () => import('../views/kuehlschrank.vue') },
+      { path: 'Dashboard', component: () => import('../views/Dashboard.vue'), meta: { auth: '*' } },
+      { path: 'Kuehlschrank', component: () => import('../views/kuehlschrank.vue'), meta: { auth: '*' } },
     ]
   },
-  {
-    path: '/Admin',
-    component: () => import('../Layouts/AuthLayout.vue'),
-    children: [
-      { path: 'Dashboard', component: () => import('../views/Admin/Dashboard.vue'), meta: { permissions: ['ADMINISTRATOR'] } },
-    ]
-  },
+  // {
+  //   path: '/Admin',
+  //   component: () => import('../Layouts/AuthLayout.vue'),
+  //   children: [
+  //     { path: 'Dashboard', component: () => import('../views/Admin/Dashboard.vue'), meta: { permissions: ['ADMINISTRATOR'] } },
+  //   ]
+  // },
 
 ]
 
@@ -38,7 +38,7 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {  
+ router.beforeEach((to, from, next) => {  
   
   var token = null
   var jwt = store.getters["JWT"]
@@ -48,22 +48,27 @@ router.beforeEach((to, from, next) => {
     token = JSON.parse(window.atob(base64))
 
   }
-
-  if(to.meta.permissions !== undefined){
-    var permissions = token.permissions;
-    var permitted = false;
-    to.meta.permissions.forEach((element) => {
-      var per = permissions.some((x) => x === element);
-      if (per) {
-        permitted = true;
-      }
-    });
-    if (!permitted) {
+  if(to.meta.auth != undefined){
+    if(token == null){
       next('Login')
     }
   }
-  next()
-  return
+
+//   if(to.meta.permissions !== undefined){
+//     var permissions = token.permissions;
+//     var permitted = false;
+//     to.meta.permissions.forEach((element) => {
+//       var per = permissions.some((x) => x === element);
+//       if (per) {
+//         permitted = true;
+//       }
+//     });
+//     if (!permitted) {
+//       next('Login')
+//     }
+//   }
+   next()
+   return
 })
 
 
