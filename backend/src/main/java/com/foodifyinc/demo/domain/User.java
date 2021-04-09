@@ -30,5 +30,14 @@ public class User extends AbstractEntity{
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Fridge> Fridges;
 
+
+    public <T> User(String username, String email, String password, Set<Role> roles) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 }

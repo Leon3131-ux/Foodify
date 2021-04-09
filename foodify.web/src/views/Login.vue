@@ -81,8 +81,8 @@ export default {
           this.$v.$reset();
           return;
         }
-        this.$store.dispatch("auth/logout");
-        this.$store.dispatch("auth/login", {
+        this.$store.dispatch("logout");
+        this.$store.dispatch("login", {
           jwt: token,
         });
         this.$router.push("/Dashboard");
