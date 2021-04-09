@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class FrigeController {
 
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
 
     @RequestMapping(value = "api/frige/getfrige",method = RequestMethod.GET)
     public ResponseEntity<?> getfrige(){
