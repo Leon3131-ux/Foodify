@@ -12,27 +12,33 @@
 
           <v-virtual-scroll
             min-height="67vh"
-            item-height="60"
-            :items="frige.items"
+            :item-height="virtualScrollItemHeightfixed"
+            :items="frige.compartment"
           >
             <template v-slot="item">
-              <draggable
-                v-model="frige.items"
-                class="v-tabs__container"
-                group="fooditems"
-              >
-                <v-card outlined ripple>
-                  <v-card-title class="headline lighten-2">
-                    {{ item.item.name }}
-                  </v-card-title>
-                </v-card>
-              </draggable>
+              <v-card outlined>
+                <v-card-title class="headline lighten-2">
+                  {{ item.item.name }}
+                </v-card-title>
+                <hr />
+                <draggable v-model="item.item.Fooditems" group="Fooditems">
+                  <v-card
+                    outlined
+                    ripple
+                    v-for="(fooditem, index) in item.item.Fooditems"
+                    :key="index"
+                  >
+                    <div class="subtitle-1 ma-2">
+                      {{ fooditem.name }}
+                    </div>
+                  </v-card>
+                </draggable>
+              </v-card>
             </template>
           </v-virtual-scroll>
         </v-card>
       </v-col>
     </v-row>
-
     <createFrigeDialog ref="createFrigeDialog" @changed="getfridges" />
   </v-main>
 </template>
@@ -47,40 +53,54 @@ export default {
       friges: [
         {
           name: "asdad",
-          items: [
-            { name: "John", id: 0 },
-            { name: "John1", id: 1 },
-            { name: "John2", id: 2 },
+          compartment: [
+            {
+              name: "John",
+              Fooditems: [
+                { name: "asd1" },
+                { name: "asd2" },
+                { name: "asd123" },
+              ],
+            },
+            { name: "John", Fooditems: [{ name: "asd123" }] },
+            { name: "John", Fooditems: [] },
           ],
         },
         {
           name: "1123",
         },
       ],
-      active: 0,
-      tabs: [
-        {
-          id: 1,
-          name: "1st Tab",
-          text: "This is a 1st tab",
-        },
-        {
-          id: 2,
-          name: "2nd Tab",
-          text: "This is a 2nd tab",
-        },
-        {
-          id: 3,
-          name: "3rd Tab",
-          text: "This is a 3rd tab",
-        },
-      ],
     };
+  },
+  computed: {
+    virtualScrollItemHeightfixed() {
+      var fooditemsLength = [];
+      for (var value of this.friges) {
+        var complength = [];
+        if (value.compartment !== undefined) {
+          for (var comp in value.compartment) {
+            complength.push(value.compartment[comp].Fooditems.length);
+          }
+          fooditemsLength.push(Math.max(...complength));
+        }
+      }
+      var maxvalue = Math.max(...fooditemsLength);
+      return 100 + maxvalue * 50;
+    },
   },
   mounted() {
     this.getfridges();
   },
   methods: {
+    virtualScrollItemHeight(val) {
+      var fooditemsLength = [];
+      for (var comp in val) {
+        fooditemsLength.push(val[comp].Fooditems.length);
+      }
+      var maxvalue = Math.max(...fooditemsLength);
+      console.log(maxvalue);
+      return 150;
+    },
     async getfridges() {
       let res = await axios.get("frige/getfriges");
 

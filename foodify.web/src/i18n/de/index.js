@@ -12,6 +12,7 @@ export default {
   compartment:"compartment",
   add:'add',
   close:"close",
+  addfridge:"kühlschrank hinzufügen",
   validation: {
     required: 'Erforderlich',
     email: 'Keine gültige E-Mail',
