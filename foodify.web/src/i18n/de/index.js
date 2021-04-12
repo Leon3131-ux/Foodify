@@ -13,6 +13,7 @@ export default {
   add:'add',
   close:"close",
   addfridge:"kühlschrank hinzufügen",
+  expirationDatebald:"Diese Esswaren verotten",
   validation: {
     required: 'Erforderlich',
     email: 'Keine gültige E-Mail',
