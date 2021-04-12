@@ -27,9 +27,15 @@ export default {
       var nav = [
         {
           icon: "",
+          text: this.$t("Dashboard"),
+          to: "Dashboard",
+        },
+        {
+          icon: "",
           text: this.$t("kuehlschrank"),
           to: "Kuehlschrank",
         },
+
         // {
         //   icon: "",
         //   text: this.$t("Admin"),

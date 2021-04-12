@@ -5,9 +5,15 @@
     <v-row class="ma-6">
       <v-col v-for="(frige, index) in friges" :key="index">
         <v-card outlined min-height="70vh">
-          <v-card-title class="headline lighten-2">
-            {{ frige.name }}
+          <v-card-title class="headline lighten-2 row">
+            <div class="col-11">{{ frige.name }}</div>
+            <div class="col-1">
+              <v-btn elevation="2" icon medium small @click="editfrige(frige)">
+                <v-icon>fas fa-edit</v-icon></v-btn
+              >
+            </div>
           </v-card-title>
+
           <hr />
 
           <v-virtual-scroll
@@ -20,6 +26,7 @@
                 <v-card-title class="headline lighten-2">
                   {{ item.item.name }}
                 </v-card-title>
+
                 <hr />
                 <draggable v-model="item.item.Fooditems" group="Fooditems">
                   <v-card
@@ -28,9 +35,31 @@
                     v-for="(fooditem, index) in item.item.Fooditems"
                     :key="index"
                   >
-                    <div class="subtitle-1 ma-2">
-                      {{ fooditem.name }}
-                    </div>
+                    <v-card-text>
+                      <div class="row">
+                        <div class="subtitle-1 col-4">
+                          {{ fooditem.name }}
+                        </div>
+                        <div class="subtitle-1 col-3">
+                          {{ fooditem.amount }}
+                        </div>
+                        <div class="subtitle-1 col-3">
+                          {{ $t("expirationDate") }}:
+                          {{ fooditem.expirationDate }}
+                        </div>
+                        <div class="col-1">
+                          <v-btn
+                            elevation="2"
+                            icon
+                            medium
+                            small
+                            @click="deletefooditem(fooditem)"
+                          >
+                            <v-icon>fas fa-trash</v-icon></v-btn
+                          >
+                        </div>
+                      </div>
+                    </v-card-text>
                   </v-card>
                 </draggable>
               </v-card>
@@ -57,17 +86,36 @@ export default {
             {
               name: "John",
               Fooditems: [
-                { name: "asd1" },
-                { name: "asd2" },
-                { name: "asd123" },
+                { name: "as11d1", amount: "0.5", expirationDate: "20.10.2130" },
+                {
+                  name: "asd1231",
+                  amount: "0.5",
+                  expirationDate: "20.10.2130",
+                },
+                { name: "123", amount: "0.5", expirationDate: "20.10.2130" },
               ],
             },
-            { name: "John", Fooditems: [{ name: "asd123" }] },
+            {
+              name: "John",
+              Fooditems: [
+                {
+                  name: "asd1123",
+                  amount: "0.5",
+                  expirationDate: "20.10.2130",
+                },
+              ],
+            },
             { name: "John", Fooditems: [] },
           ],
         },
         {
           name: "1123",
+          compartment: [
+            {
+              name: "John1123",
+              Fooditems: [],
+            },
+          ],
         },
       ],
     };
@@ -85,22 +133,16 @@ export default {
         }
       }
       var maxvalue = Math.max(...fooditemsLength);
-      return 100 + maxvalue * 50;
+      console.log(maxvalue);
+      return 100 + maxvalue * 90;
     },
   },
   mounted() {
     this.getfridges();
   },
   methods: {
-    virtualScrollItemHeight(val) {
-      var fooditemsLength = [];
-      for (var comp in val) {
-        fooditemsLength.push(val[comp].Fooditems.length);
-      }
-      var maxvalue = Math.max(...fooditemsLength);
-      console.log(maxvalue);
-      return 150;
-    },
+    editfrige(frige) {},
+    deletefooditem(item) {},
     async getfridges() {
       let res = await axios.get("frige/getfriges");
 
