@@ -1,7 +1,7 @@
 <template>
   <v-layout view="lHh Lpr lFf">
     <v-app-bar app color="primary" dark>
-      <v-toolbar-title>{{ $t("Foodify") }}</v-toolbar-title>
+      <v-toolbar-title v-on:click="landingpage">{{ $t("Foodify") }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import Home from "@/views/Home";
+
 export default {
   name: "MainLayout",
   data() {
@@ -39,6 +41,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    landingpage() {
+      this.$router.push({ name: "Home" });
+    }
   },
 };
 </script>

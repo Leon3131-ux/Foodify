@@ -1,10 +1,14 @@
 <template>
   <v-main>
     <v-container>
+      <v-row>
+        <v-col cols="12">
+      <v-card class="px-4 py-4" >
       <h1>{{ $t("Login") }}</h1>
       <form-wrapper :validator="$v">
         <form-group name="username">
           <v-text-field
+              color="primary"
             v-model="username"
             label="Username"
             slot-scope="{ attrs }"
@@ -14,6 +18,7 @@
 
         <form-group name="password">
           <v-text-field
+              color="primary"
             v-model="password"
             type="password"
             label="Password"
@@ -38,6 +43,9 @@
         facilisis. Phasellus magna. Cras risus ipsum, faucibus ut, ullamcorper
         id, varius ac, leo. In hac habitasse platea dictumst. Praesent turpis.
       </v-alert>
+      </v-card>
+        </v-col>
+      </v-row>
     </v-container>
   </v-main>
 </template>
