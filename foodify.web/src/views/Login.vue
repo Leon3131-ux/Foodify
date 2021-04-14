@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-      <v-card class="px-4 py-4" >
+      <v-card class="px-4 py-4">
       <h1>{{ $t("Login") }}</h1>
       <form-wrapper :validator="$v">
         <form-group name="username">
@@ -27,8 +27,8 @@
           />
         </form-group>
       </form-wrapper>
-      <v-btn @click="submitLogin">login</v-btn>
-      <v-btn type="a" to="Register">Register</v-btn>
+      <v-btn @click="submitLogin" color="primary">login</v-btn>
+      <v-btn type="a" to="Register" class="ml-5" color="primary">Register</v-btn>
       <v-alert
         :value="alert"
         color="negative"
