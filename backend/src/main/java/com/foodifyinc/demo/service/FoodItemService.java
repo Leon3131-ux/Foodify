@@ -1,6 +1,7 @@
 package com.foodifyinc.demo.service;
 
 import com.foodifyinc.demo.domain.FoodItem;
+import com.foodifyinc.demo.domain.User;
 import com.foodifyinc.demo.dto.FoodItemDto;
 import com.foodifyinc.demo.repository.FoodItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,10 @@ import java.util.Optional;
 public class FoodItemService {
 
     private final FoodItemRepository foodItemRepository;
+
+    public boolean validateBelongsToUser(FoodItem foodItem, User user){
+        return foodItem.getUser().equals(user);
+    }
 
     public Optional<FoodItem> findById(Long id){
         return foodItemRepository.findById(id);

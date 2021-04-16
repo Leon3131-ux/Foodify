@@ -1,4 +1,3 @@
-
 package com.foodifyinc.demo.dto;
 
 import lombok.AllArgsConstructor;
@@ -12,13 +11,14 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SaveCompartmentFoodDto {
+public class ReturnCompartmentFoodDto {
 
-    private Long compartmentId;
-    private Long foodItemId;
+    private Long id;
+    private FoodItemDto foodItemDto;
     private Long itemAmount;
     private Double unitAmount;
-    private Long unitId;
+    private UnitDto unitDto;
+    private Long compartmentId;
     private Date expirationDate;
 
 }

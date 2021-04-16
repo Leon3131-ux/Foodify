@@ -34,7 +34,7 @@ public class CompartmentController {
 
     @RequestMapping(value = "/api/compartment/save", method = RequestMethod.POST)
     public ResponseEntity<?> saveCompartment(@RequestBody @Validated CompartmentDto compartmentDto, Principal principal){
-        User user = userService.getByUsernameOrThrowException(principal.getName());
+        User user = userService.findByUsernameOrThrowException(principal.getName());
         Compartment compartment;
         Optional<Fridge> optionalFridge = fridgeService.findById(compartmentDto.getFridgeId());
         if(optionalFridge.isPresent() && fridgeService.fridgeBelongsToUser(optionalFridge.get(), user)){
@@ -53,5 +53,7 @@ public class CompartmentController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
+
+
 
 }

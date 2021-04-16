@@ -31,7 +31,7 @@ public class FridgeController {
 
     @RequestMapping(value = "/api/fridge/save", method = RequestMethod.POST)
     public ResponseEntity<?> saveFridge(@RequestBody @Validated FridgeDto fridgeDto, Principal principal){
-        User user = userService.getByUsernameOrThrowException(principal.getName());
+        User user = userService.findByUsernameOrThrowException(principal.getName());
         Fridge fridge;
         if(fridgeDto.getId() == null || fridgeDto.getId() == 0){
             fridge = fridgeConverter.toEntity(fridgeDto, user);

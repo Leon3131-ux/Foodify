@@ -1,6 +1,7 @@
 package com.foodifyinc.demo.service;
 
 import com.foodifyinc.demo.domain.Compartment;
+import com.foodifyinc.demo.domain.CompartmentFood;
 import com.foodifyinc.demo.domain.Fridge;
 import com.foodifyinc.demo.domain.User;
 import com.foodifyinc.demo.dto.CompartmentDto;

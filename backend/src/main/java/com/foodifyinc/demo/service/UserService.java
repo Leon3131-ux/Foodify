@@ -18,11 +18,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> getByUsername(String username){
+    public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }
 
-    public User getByUsernameOrThrowException(String username){
+    public User findByUsernameOrThrowException(String username){
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 

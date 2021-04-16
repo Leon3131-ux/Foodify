@@ -34,7 +34,7 @@ public class FoodItemController {
 
     @RequestMapping(value = "/api/foodItem/save")
     public ResponseEntity<?> saveFoodItem(@RequestBody @Validated FoodItemDto foodItemDto, Principal principal){
-        User user = userService.getByUsernameOrThrowException(principal.getName());
+        User user = userService.findByUsernameOrThrowException(principal.getName());
         FoodItem foodItem;
         if(foodItemDto.getId() == 0 || foodItemDto.getId() == null){
             foodItem = foodItemConverter.toEntity(foodItemDto, user);
