@@ -2,6 +2,7 @@ package com.foodifyinc.demo.controller;
 
 import com.foodifyinc.demo.converter.CompartmentConverter;
 import com.foodifyinc.demo.domain.Compartment;
+import com.foodifyinc.demo.domain.Fridge;
 import com.foodifyinc.demo.domain.User;
 import com.foodifyinc.demo.dto.CompartmentDto;
 import com.foodifyinc.demo.service.CompartmentService;
@@ -32,14 +33,15 @@ public class CompartmentController {
     private final UserService userService;
 
     @InitBinder("saveCompartmentDto")
-    public void initRegisterDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
+    public void initCompartmentDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
 
     @RequestMapping(value = "/api/compartment/save", method = RequestMethod.POST)
     public ResponseEntity<?> saveCompartment(@Validated CompartmentDto compartmentDto, Principal principal){
         User user = userService.getByUsernameOrThrowException(principal.getName());
         Compartment compartment;
         if(compartmentDto.getId() == null || compartmentDto.getId() == 0){
-            if(fridgeService.fridgeIsPresentAndBelongsToUser(compartmentDto.getFridgeId(), user)){
+            Optional<Fridge> optionalFridge = fridgeService.findById(compartmentDto.getId());
+            if(optionalFridge.isPresent() && fridgeService.fridgeBelongsToUser(optionalFridge.get(), user)){
                 compartment = compartmentConverter.toEntity(compartmentDto);
             }else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
