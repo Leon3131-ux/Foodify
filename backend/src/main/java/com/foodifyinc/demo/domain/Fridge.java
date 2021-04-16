@@ -6,11 +6,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class Fridge extends AbstractEntity {
 
     @Column(nullable = false)

@@ -1,26 +1,23 @@
 package com.foodifyinc.demo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class CompartmentFood extends AbstractEntity{
 
     @ManyToOne()
     private FoodItem foodItem;
 
-    @ManyToOne
+    @ManyToOne()
     private Compartment compartment;
 
     @Column(nullable = false)

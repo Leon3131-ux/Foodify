@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -36,25 +33,25 @@ public class CompartmentController {
     public void initCompartmentDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
 
     @RequestMapping(value = "/api/compartment/save", method = RequestMethod.POST)
-    public ResponseEntity<?> saveCompartment(@Validated CompartmentDto compartmentDto, Principal principal){
+    public ResponseEntity<?> saveCompartment(@RequestBody @Validated CompartmentDto compartmentDto, Principal principal){
         User user = userService.getByUsernameOrThrowException(principal.getName());
         Compartment compartment;
-        if(compartmentDto.getId() == null || compartmentDto.getId() == 0){
-            Optional<Fridge> optionalFridge = fridgeService.findById(compartmentDto.getId());
-            if(optionalFridge.isPresent() && fridgeService.fridgeBelongsToUser(optionalFridge.get(), user)){
+        Optional<Fridge> optionalFridge = fridgeService.findById(compartmentDto.getFridgeId());
+        if(optionalFridge.isPresent() && fridgeService.fridgeBelongsToUser(optionalFridge.get(), user)){
+            if(compartmentDto.getId() == null || compartmentDto.getId() == 0){
                 compartment = compartmentConverter.toEntity(compartmentDto);
             }else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                Optional<Compartment> oldCompartment = compartmentService.findById(compartmentDto.getId());
+                if(oldCompartment.isPresent() && compartmentService.validateBelongsToUser(oldCompartment.get(), user)){
+                    compartment = compartmentService.update(oldCompartment.get(), compartmentDto);
+                }else {
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
             }
-        }else {
-            Optional<Compartment> oldCompartment = compartmentService.findById(compartmentDto.getId());
-            if(oldCompartment.isPresent() && compartmentService.validateBelongsToUser(oldCompartment.get(), user)){
-                compartment = compartmentService.update(oldCompartment.get(), compartmentDto);
-            }else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+            return new ResponseEntity<>(compartmentConverter.toDto(compartmentService.save(compartment)), HttpStatus.OK);
         }
-        return new ResponseEntity<>(compartmentConverter.toDto(compartmentService.save(compartment)), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
 }

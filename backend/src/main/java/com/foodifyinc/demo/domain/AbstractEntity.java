@@ -14,7 +14,6 @@ import javax.persistence.*;
  */
 @Getter
 @Setter
-@ToString
 @MappedSuperclass
 @EqualsAndHashCode
 class AbstractEntity {

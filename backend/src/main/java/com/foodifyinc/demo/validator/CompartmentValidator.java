@@ -24,7 +24,9 @@ public class CompartmentValidator implements Validator {
     public void validate(Object target, Errors errors) {
         CompartmentDto dto = (CompartmentDto) target;
 
-        if(dto.getId() == null || compartmentRepository.findById(dto.getId()).isEmpty()){
+        if(dto.getId() == null){
+            errors.rejectValue("id", "errors.compartment.id.empty");
+        }else if(dto.getId() != 0 && compartmentRepository.findById(dto.getId()).isEmpty()){
             errors.rejectValue("id", "errors.compartment.id.empty");
         }
 

@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -33,7 +30,7 @@ public class FridgeController {
     public void initFridgeDtoBinder(WebDataBinder binder){binder.setValidator(fridgeValidator);}
 
     @RequestMapping(value = "/api/fridge/save", method = RequestMethod.POST)
-    public ResponseEntity<?> saveFridge(@Validated FridgeDto fridgeDto, Principal principal){
+    public ResponseEntity<?> saveFridge(@RequestBody @Validated FridgeDto fridgeDto, Principal principal){
         User user = userService.getByUsernameOrThrowException(principal.getName());
         Fridge fridge;
         if(fridgeDto.getId() == null || fridgeDto.getId() == 0){

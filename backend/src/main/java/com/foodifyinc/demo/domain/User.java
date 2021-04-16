@@ -1,21 +1,15 @@
 package com.foodifyinc.demo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
-@Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class User extends AbstractEntity{
 
     @Column(nullable = false, unique = true)
@@ -30,11 +24,11 @@ public class User extends AbstractEntity{
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private Set<Fridge> Fridges;
 
 
-    public <T> User(String username, String email, String password, Set<Role> roles) {
+    public User(String username, String email, String password, Set<Role> roles) {
         this.username = username;
         this.email = email;
         this.password = password;

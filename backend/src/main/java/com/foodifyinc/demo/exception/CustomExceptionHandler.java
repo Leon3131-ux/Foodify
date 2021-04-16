@@ -19,7 +19,7 @@ public class CustomExceptionHandler {
         HashMap<String, String> validationErrors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> validationErrors.put(fieldError.getField(), fieldError.getCode()));
         ValidationErrorDetails errorDetails = new ValidationErrorDetails(new Date().getTime(), ex.getMessage(), validationErrors, ex.getClass(), request.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.OK);
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(HttpClientErrorException.class)
     public final ResponseEntity<? extends ErrorDetails> handleHttpClientErrorException(HttpClientErrorException ex, WebRequest request){

@@ -22,7 +22,9 @@ public class FridgeValidator implements Validator {
     public void validate(Object target, Errors errors) {
         FridgeDto fridgeDto = (FridgeDto) target;
 
-        if(fridgeDto.getId() == null || fridgeRepository.findById(fridgeDto.getId()).isEmpty()){
+        if(fridgeDto.getId() == null){
+            errors.rejectValue("id", "errors.fridge.id.empty");
+        }else if(fridgeDto.getId() != 0 && fridgeRepository.findById(fridgeDto.getId()).isEmpty()){
             errors.rejectValue("id", "errors.fridge.id.empty");
         }
         if(fridgeDto.getName() == null || fridgeDto.getName().isBlank()){
