@@ -23,8 +23,11 @@ public class CompartmentFood extends AbstractEntity{
     @ManyToOne
     private Compartment compartment;
 
+    @Column(nullable = false)
+    private Long itemAmount;
+
     @Column(nullable = false, precision = 2)
-    private Double amount;
+    private Double unitAmount;
 
     @ManyToOne
     private Unit unit;
