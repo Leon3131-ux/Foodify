@@ -38,7 +38,7 @@ public class CompartmentFoodController {
     private final UserService userService;
     private final CompartmentFoodConverter compartmentFoodConverter;
 
-    @RequestMapping(value = "/api/compartment/foodItem/save")
+    @RequestMapping(value = "/api/compartment/food/save")
     public ResponseEntity<?> saveCompartmentFood(@RequestBody @Validated SaveCompartmentFoodDto saveCompartmentFoodDto, Principal principal){
         User user = userService.findByUsernameOrThrowException(principal.getName());
         CompartmentFood compartmentFood;
