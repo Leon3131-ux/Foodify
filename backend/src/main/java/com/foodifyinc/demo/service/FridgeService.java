@@ -14,7 +14,7 @@ public class FridgeService {
 
     private final FridgeRepository fridgeRepository;
 
-    public boolean fridgeBelongsToUser(Long fridgeId, User user){
+    public boolean fridgeIsPresentAndBelongsToUser(Long fridgeId, User user){
         Optional<Fridge> optionalFridge = fridgeRepository.findById(fridgeId);
         return optionalFridge.map(fridge -> fridge.getUser().equals(user)).orElse(false);
     }

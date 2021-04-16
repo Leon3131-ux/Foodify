@@ -22,7 +22,7 @@ public class CompartmentConverter {
     }
 
     public CompartmentDto toDto(Compartment compartment){
-        return new CompartmentDto(compartment.getName(), compartment.getFridge().getId());
+        return new CompartmentDto(compartment.getId(), compartment.getName(), compartment.getFridge().getId());
     }
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,14 +35,24 @@ public class CompartmentController {
     public void initRegisterDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
 
     @RequestMapping(value = "/api/compartment/add", method = RequestMethod.POST)
-    public ResponseEntity<?> addCompartment(@Validated CompartmentDto compartmentDto, Principal principal){
+    public ResponseEntity<?> saveCompartment(@Validated CompartmentDto compartmentDto, Principal principal){
         User user = userService.getByUsernameOrThrowException(principal.getName());
-        if(fridgeService.fridgeBelongsToUser(compartmentDto.getFridgeId(), user)){
-            Compartment compartment = compartmentService.save(compartmentConverter.toEntity(compartmentDto));
-            return new ResponseEntity<>(compartmentConverter.toDto(compartment), HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        Compartment compartment;
+        if(compartmentDto.getId() == null || compartmentDto.getId() == 0){
+            if(fridgeService.fridgeIsPresentAndBelongsToUser(compartmentDto.getFridgeId(), user)){
+                compartment = compartmentConverter.toEntity(compartmentDto);
+            }else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }else {
+            Optional<Compartment> oldCompartment = compartmentService.findById(compartmentDto.getId());
+            if(oldCompartment.isPresent() && compartmentService.validateBelongsToUser(oldCompartment.get(), user)){
+                compartment = compartmentService.update(oldCompartment.get(), compartmentDto);
+            }else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
+        return new ResponseEntity<>(compartmentConverter.toDto(compartmentService.save(compartment)), HttpStatus.OK);
     }
 
 }

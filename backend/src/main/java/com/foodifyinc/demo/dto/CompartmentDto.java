@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class CompartmentDto {
 
+    private Long id;
     private String name;
     private Long fridgeId;
 
