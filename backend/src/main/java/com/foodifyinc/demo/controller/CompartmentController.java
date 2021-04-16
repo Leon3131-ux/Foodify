@@ -34,7 +34,7 @@ public class CompartmentController {
     @InitBinder("saveCompartmentDto")
     public void initRegisterDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
 
-    @RequestMapping(value = "/api/compartment/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/compartment/save", method = RequestMethod.POST)
     public ResponseEntity<?> saveCompartment(@Validated CompartmentDto compartmentDto, Principal principal){
         User user = userService.getByUsernameOrThrowException(principal.getName());
         Compartment compartment;
