@@ -25,7 +25,7 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         RegisterDto registerDto = (RegisterDto) target;
-        if(registerDto.getUsername().isBlank()){
+        if(registerDto.getUsername() == null || registerDto.getUsername().isBlank()){
             errors.rejectValue("username", "errors.register.username.empty");
         }else {
             if(userRepository.findByUsername(registerDto.getUsername()).isPresent()){
@@ -33,7 +33,7 @@ public class UserValidator implements Validator {
             }
         }
 
-        if(registerDto.getPassword().isBlank()){
+        if(registerDto.getPassword() == null || registerDto.getPassword().isBlank()){
             errors.rejectValue("password", "errors.register.password.empty");
         }
         if(!EmailValidator.getInstance().isValid(registerDto.getEmail())){
