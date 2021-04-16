@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -46,10 +47,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>(user.getAuthorities());
+
         String token = JWT.create().withSubject(user.getUsername())
+                .withArrayClaim("permissions", grantedAuthorities.stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toArray(String[]::new)
+                )
                 .withClaim("username", user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC256(SecurityConstants.SECRET.getBytes()));
+
+        //res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 
         res.addHeader("Content-Type", "application/json");
         res.getWriter().write(token);

@@ -5,8 +5,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Data
 @Entity
@@ -24,16 +27,17 @@ public class User extends AbstractEntity{
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<FoodItem> foodItems;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    private List<Fridge> fridges;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Fridge> Fridges;
 
 
-    public User(String username, String email, String password) {
+    public <T> User(String username, String email, String password, Set<Role> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 }

@@ -19,9 +19,6 @@ public class FoodItem extends AbstractEntity{
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    private Unit unit;
-
     @ManyToOne()
     private User user;
 

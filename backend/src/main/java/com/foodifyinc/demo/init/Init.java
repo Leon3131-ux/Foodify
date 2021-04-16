@@ -1,7 +1,8 @@
 package com.foodifyinc.demo.init;
 
 import com.foodifyinc.demo.domain.*;
-import com.foodifyinc.demo.repository.UnitRepository;
+import com.foodifyinc.demo.repository.PermissionRepository;
+import com.foodifyinc.demo.repository.RoleRepository;
 import com.foodifyinc.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,15 +10,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
 public class Init {
 
+    private final PermissionRepository permissionRepository;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final UnitRepository unitRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${db.initialize}")
@@ -26,28 +27,64 @@ public class Init {
     @PostConstruct
     public void init(){
         if(initialize){
-            loadTestUsers();
-            loadUnits();
+            Set<Permission> userPermissions = loadUserPermissions();
+            Set<Permission> adminPermissions = loadAdminPermissions();
+            Role userRole = loadUserRole(userPermissions);
+            Role adminRole = loadAdminRole(adminPermissions);
+            loadTestUsers(userRole, adminRole);
         }
     }
 
-    private void loadTestUsers(){
-        List<User> users = new ArrayList<>();
-        users.add(new User("test", "test@test.com", bCryptPasswordEncoder.encode("test")));
+    private Set<Permission> loadUserPermissions(){
+        Set<Permission> permissions = new HashSet<>();
+        List<PermissionName> userPermissionNames = new ArrayList<>();
+        userPermissionNames.add(PermissionName.USER);
 
-        for(User user: users){
-            if(userRepository.findByUsername(user.getUsername()).isEmpty()){
-                userRepository.save(user);
+        for (PermissionName permissionName : PermissionName.values()){
+            if(userPermissionNames.contains(permissionName)){
+                permissions.add(new Permission(permissionName));
             }
         }
+        for(Permission permission : permissions){
+            permissionRepository.save(permission);
+        }
+        return permissions;
     }
 
-    private void loadUnits(){
-        for(UnitName unitName: UnitName.values()){
-            if(unitRepository.findByName(unitName).isEmpty()){
-                unitRepository.save(new Unit(unitName));
+    private Set<Permission> loadAdminPermissions(){
+        Set<Permission> permissions = new HashSet<>();
+        List<PermissionName> userPermissions = new ArrayList<>();
+        userPermissions.add(PermissionName.ADD_USER);
+        userPermissions.add(PermissionName.MANAGE_USER);
+        userPermissions.add(PermissionName.DELETE_USER);
+        for (PermissionName permissionName : PermissionName.values()){
+            if(userPermissions.contains(permissionName)){
+                permissions.add(new Permission(permissionName));
             }
         }
+        for(Permission permission : permissions){
+            permissionRepository.save(permission);
+        }
+        return permissions;
+    }
+
+    private Role loadUserRole(Set<Permission> permissions){
+        Role userRole = new Role(RoleName.USER, permissions);
+        return roleRepository.save(userRole);
+    }
+
+    private Role loadAdminRole(Set<Permission> permissions){
+        Role adminRole = new Role(RoleName.ADMINISTRATOR, permissions);
+        return roleRepository.save(adminRole);
+    }
+
+    private void loadTestUsers(Role userRole, Role adminRole){
+
+        User userUser = new User("test", "test@test.com", bCryptPasswordEncoder.encode("test"), Collections.singleton(userRole));
+        User adminUser = new User("admin", "admin@admin.com", bCryptPasswordEncoder.encode("admin"), Collections.singleton(adminRole));
+
+        userRepository.save(userUser);
+        userRepository.save(adminUser);
     }
 
 }
