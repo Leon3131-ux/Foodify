@@ -101,7 +101,6 @@ export default {
         name: this.frigename,
       });
       if (res.status === 200) {
-        console.log("frige", res.data);
         this.frigeid = res.data.id;
         for (const item of this.compartment) {
           res = await axios.post("compartment/save", {
