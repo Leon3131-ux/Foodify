@@ -96,9 +96,23 @@ export default {
       });
     },
     async createFrige() {
-      this.opened = false;
-      //this.$v.$reset();
+      let res = await axios.post("fridge/save", {
+        id: this.frigeid,
+        name: this.frigename,
+      });
+      if (res.status === 200) {
+        console.log("frige", res.data);
+        this.frigeid = res.data.id;
+        for (const item of this.compartment) {
+          res = await axios.post("compartment/save", {
+            id: item.id,
+            name: item.name,
+            fridgeId: this.frigeid,
+          });
+        }
+      }
       this.$emit("changed");
+      this.close();
     },
   },
 };
