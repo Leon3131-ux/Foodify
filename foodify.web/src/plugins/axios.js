@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(request => {
-  console.log(store.getters["JWT"])
+  
   if(request.headers.Authorization == "Bearer null"){
     delete request.headers["Authorization"];
   }
