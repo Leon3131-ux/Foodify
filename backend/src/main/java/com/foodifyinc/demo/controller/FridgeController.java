@@ -54,4 +54,12 @@ public class FridgeController {
         return fridgeConverter.toDtos(fridgeService.findByUser(user));
     }
 
+    @RequestMapping(value = "/api/fridge/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFridge(@PathVariable(value = "id") Fridge fridge, Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        if(fridge.getUser().equals(user)){
+            return new ResponseEntity<>(fridgeConverter.toDto(fridge), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
