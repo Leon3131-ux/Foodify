@@ -15,7 +15,7 @@
           </form-group>
           <v-row justify="end">
             <v-btn elevation="2" icon medium small @click="addcompartment">
-              <v-icon>mdi-pluis</v-icon>
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-row>
 
@@ -27,7 +27,7 @@
                 :label="$t('compartment')"
                 slot-scope="{ attrs }"
                 v-bind="attrs"
-                append-icon="far fa-trash-alt"
+                append-icon="mdi-delete"
                 @click:append="deletecompartment(index)"
               >
                 <template v-slot:prepend>{{ index + 1 }}</template>
