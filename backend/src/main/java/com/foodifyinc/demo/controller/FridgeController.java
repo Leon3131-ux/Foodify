@@ -62,4 +62,14 @@ public class FridgeController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @RequestMapping(value = "/api/fridge/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFridge(@PathVariable(value = "id") Fridge fridge, Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        if(fridge.getUser().equals(user)){
+            fridgeService.delete(fridge);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }

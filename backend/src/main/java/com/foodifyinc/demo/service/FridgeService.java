@@ -15,6 +15,7 @@ import java.util.Optional;
 public class FridgeService {
 
     private final FridgeRepository fridgeRepository;
+    private final CompartmentService compartmentService;
 
     public Optional<Fridge> findById(Long id){return fridgeRepository.findById(id);}
 
@@ -33,6 +34,11 @@ public class FridgeService {
 
     public List<Fridge> findByUser(User user){
         return fridgeRepository.findAllByUser(user);
+    }
+
+    public void delete(Fridge fridge){
+        compartmentService.deleteAllByFridge(fridge);
+        fridgeRepository.delete(fridge);
     }
 
 }

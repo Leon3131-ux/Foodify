@@ -9,6 +9,7 @@ import com.foodifyinc.demo.repository.FridgeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +18,7 @@ public class CompartmentService {
 
     private final CompartmentRepository compartmentRepository;
     private final FridgeRepository fridgeRepository;
+    private final CompartmentFoodService compartmentFoodService;
 
     public Optional<Compartment> findById(Long id){
         return compartmentRepository.findById(id);
@@ -35,6 +37,12 @@ public class CompartmentService {
         Optional<Fridge> optionalFridge = fridgeRepository.findById(saveCompartmentDto.getFridgeId());
         optionalFridge.ifPresent(compartment::setFridge);
         return compartment;
+    }
+
+    public void deleteAllByFridge(Fridge fridge){
+        List<Compartment> compartments = compartmentRepository.findAllByFridge(fridge);
+        compartments.forEach(compartmentFoodService::deleteAllByCompartment);
+        compartmentRepository.deleteInBatch(compartments);
     }
 
 
