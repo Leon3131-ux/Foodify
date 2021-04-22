@@ -11,7 +11,7 @@ const routes = [
     children: [
       { path: '',name:"Home", component: () => import('../views/Home.vue') },
       { path: 'about', component: () => import('../views/About.vue') },
-      { path: 'Login', name:"Login", component: () => import('../views/Login.vue') },
+      { path: 'Login',name:'Login', component: () => import('../views/Login.vue') },
       { path: 'Register', component: () => import('../views/Register.vue') },
     ]
   },
@@ -20,17 +20,17 @@ const routes = [
     
     component: () => import('../Layouts/AuthLayout.vue'),
     children: [
-      { path: 'Dashboard', component: () => import('../views/Dashboard.vue'), meta: { auth: '*' } },
-      { path: 'Kuehlschrank', component: () => import('../views/kuehlschrank.vue'), meta: { auth: '*' } },
+      { path: 'Dashboard', component: () => import('../views/Dashboard.vue') },
+      { path: 'Kuehlschrank', component: () => import('../views/kuehlschrank.vue') },
     ]
   },
-  // {
-  //   path: '/Admin',
-  //   component: () => import('../Layouts/AuthLayout.vue'),
-  //   children: [
-  //     { path: 'Dashboard', component: () => import('../views/Admin/Dashboard.vue'), meta: { permissions: ['ADMINISTRATOR'] } },
-  //   ]
-  // },
+  {
+    path: '/Admin',
+    component: () => import('../Layouts/AuthLayout.vue'),
+    children: [
+      { path: 'Dashboard', component: () => import('../views/Dashboard.vue'), meta: { permissions: ['ADMINISTRATOR'] } },
+    ]
+  },
 
 ]
 
@@ -38,7 +38,7 @@ const router = new VueRouter({
   routes
 })
 
- router.beforeEach((to, from, next) => {  
+router.beforeEach((to, from, next) => {  
   
   var token = null
   var jwt = store.getters["JWT"]
@@ -48,27 +48,22 @@ const router = new VueRouter({
     token = JSON.parse(window.atob(base64))
 
   }
-  if(to.meta.auth != undefined){
-    if(token == null){
+
+  if(to.meta.permissions !== undefined){
+    var permissions = token.permissions;
+    var permitted = false;
+    to.meta.permissions.forEach((element) => {
+      var per = permissions.some((x) => x === element);
+      if (per) {
+        permitted = true;
+      }
+    });
+    if (!permitted) {
       next('Login')
     }
   }
-
-//   if(to.meta.permissions !== undefined){
-//     var permissions = token.permissions;
-//     var permitted = false;
-//     to.meta.permissions.forEach((element) => {
-//       var per = permissions.some((x) => x === element);
-//       if (per) {
-//         permitted = true;
-//       }
-//     });
-//     if (!permitted) {
-//       next('Login')
-//     }
-//   }
-   next()
-   return
+  next()
+  return
 })
 
 

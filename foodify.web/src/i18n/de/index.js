@@ -2,18 +2,12 @@
 // so you can safely delete all default props below
 
 export default {
-  failed: 'OK',
+  failed: 'OK de',
   success: 'sdfg',
   Login:"Login",
   Foodify:"Foodify",
   Home:"Home",
   kuehlschrank:"kühlschrank",
-  AddEditFrigeDialog:"Hinzufügen/Edit kühlschrank",
-  compartment:"compartment",
-  add:'add',
-  close:"close",
-  addfridge:"kühlschrank hinzufügen",
-  expirationDatebald:"Diese Esswaren verotten",
   validation: {
     required: 'Erforderlich',
     email: 'Keine gültige E-Mail',
