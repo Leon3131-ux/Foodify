@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -47,6 +44,16 @@ public class FoodItemController {
             }
         }
         return new ResponseEntity<>(foodItemConverter.toDto(foodItemService.save(foodItem)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/foodItem/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFoodItem(@PathVariable(value = "id") FoodItem foodItem, Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        if(foodItem.getUser().equals(user)){
+            foodItemService.delete(foodItem);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }

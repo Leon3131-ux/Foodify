@@ -30,4 +30,8 @@ public class FoodItemService {
 
     public FoodItem save(FoodItem foodItem){return foodItemRepository.save(foodItem);}
 
+    public void delete(FoodItem foodItem){
+        foodItemRepository.delete(foodItem);
+    }
+
 }
