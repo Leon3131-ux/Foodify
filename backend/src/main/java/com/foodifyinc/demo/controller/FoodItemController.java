@@ -15,6 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,6 +45,12 @@ public class FoodItemController {
             }
         }
         return new ResponseEntity<>(foodItemConverter.toDto(foodItemService.save(foodItem)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/foodItems", method = RequestMethod.GET)
+    public List<FoodItemDto> getFoodItems(Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        return foodItemConverter.toDtos(foodItemService.findByUser(user));
     }
 
     @RequestMapping(value = "/api/foodItem/{id}", method = RequestMethod.DELETE)

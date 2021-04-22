@@ -7,6 +7,7 @@ import com.foodifyinc.demo.repository.FoodItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +22,10 @@ public class FoodItemService {
 
     public Optional<FoodItem> findById(Long id){
         return foodItemRepository.findById(id);
+    }
+
+    public List<FoodItem> findByUser(User user){
+        return foodItemRepository.findAllByUser(user);
     }
 
     public FoodItem update(FoodItem foodItem, FoodItemDto foodItemDto){
