@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -49,6 +46,16 @@ public class CompartmentFoodController {
                 && foodItemService.validateBelongsToUser(optionalFoodItem.get(), user)){
             compartmentFood = compartmentFoodConverter.toEntity(saveCompartmentFoodDto);
             return new ResponseEntity<>(compartmentFoodConverter.toDto(compartmentFoodService.save(compartmentFood)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/api/compartment/food/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompartmentFood(@PathVariable(value = "id") CompartmentFood compartmentFood, Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        if(compartmentFood.getCompartment().getFridge().getUser().equals(user)){
+            compartmentFoodService.delete(compartmentFood);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

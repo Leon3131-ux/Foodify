@@ -21,4 +21,8 @@ public class CompartmentFoodService {
         compartmentFoods.forEach(compartmentFoodRepository::delete);
     }
 
+    public void delete(CompartmentFood compartmentFood){
+        compartmentFoodRepository.delete(compartmentFood);
+    }
+
 }
