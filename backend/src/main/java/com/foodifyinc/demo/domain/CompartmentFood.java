@@ -23,11 +23,8 @@ public class CompartmentFood extends AbstractEntity{
     @Column(nullable = false)
     private Long itemAmount;
 
-    @Column(nullable = false, precision = 2)
-    private Double unitAmount;
-
-    @ManyToOne
-    private Unit unit;
+    @Column(nullable = false)
+    private String unit;
 
     @Column(nullable = false)
     private Date expirationDate;

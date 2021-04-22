@@ -18,8 +18,7 @@ public class SaveCompartmentFoodDto {
     private Long compartmentId;
     private Long foodItemId;
     private Long itemAmount;
-    private Double unitAmount;
-    private Long unitId;
+    private String unit;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date expirationDate;

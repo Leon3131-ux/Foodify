@@ -3,7 +3,6 @@ package com.foodifyinc.demo.init;
 import com.foodifyinc.demo.domain.*;
 import com.foodifyinc.demo.repository.PermissionRepository;
 import com.foodifyinc.demo.repository.RoleRepository;
-import com.foodifyinc.demo.repository.UnitRepository;
 import com.foodifyinc.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ public class Init {
     private final PermissionRepository permissionRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final UnitRepository unitRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${db.initialize}")
@@ -34,7 +32,6 @@ public class Init {
             Role userRole = loadUserRole(userPermissions);
             Role adminRole = loadAdminRole(adminPermissions);
             loadTestUsers(userRole, adminRole);
-            loadUnits();
         }
     }
 
@@ -88,14 +85,6 @@ public class Init {
 
         userRepository.save(userUser);
         userRepository.save(adminUser);
-    }
-
-    private void loadUnits(){
-        for(UnitName unitName: UnitName.values()){
-            if(unitRepository.findByName(unitName).isEmpty()){
-                unitRepository.save(new Unit(unitName));
-            }
-        }
     }
 
 }

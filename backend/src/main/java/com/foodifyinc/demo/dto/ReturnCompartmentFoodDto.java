@@ -16,8 +16,7 @@ public class ReturnCompartmentFoodDto {
     private Long id;
     private FoodItemDto foodItemDto;
     private Long itemAmount;
-    private Double unitAmount;
-    private UnitDto unitDto;
+    private String unit;
     private Long compartmentId;
     private Date expirationDate;
 

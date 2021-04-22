@@ -3,7 +3,6 @@ package com.foodifyinc.demo.validator;
 import com.foodifyinc.demo.dto.SaveCompartmentFoodDto;
 import com.foodifyinc.demo.repository.CompartmentRepository;
 import com.foodifyinc.demo.repository.FoodItemRepository;
-import com.foodifyinc.demo.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -18,7 +17,6 @@ public class CompartmentFoodValidator implements Validator {
 
     private final CompartmentRepository compartmentRepository;
     private final FoodItemRepository foodItemRepository;
-    private final UnitRepository unitRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -41,12 +39,8 @@ public class CompartmentFoodValidator implements Validator {
             errors.rejectValue("itemAmount", "errors.foodItem.itemAmount.empty");
         }
 
-        if(dto.getUnitAmount() == null || dto.getUnitAmount() < 0.01){
-            errors.rejectValue("unitAmount", "errors.foodItem.unitAmount.empty");
-        }
-
-        if(unitRepository.findById(dto.getUnitId()).isEmpty()){
-            errors.rejectValue("unitId", "errors.foodItem.unitId.empty");
+        if(dto.getUnit() == null || dto.getUnit().isBlank()){
+            errors.rejectValue("unit", "errors.foodItem.unit.empty");
         }
 
         if(dto.getExpirationDate() == null || dto.getExpirationDate().before(new Date())){
