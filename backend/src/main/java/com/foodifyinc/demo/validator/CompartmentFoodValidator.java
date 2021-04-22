@@ -1,6 +1,7 @@
 package com.foodifyinc.demo.validator;
 
 import com.foodifyinc.demo.dto.SaveCompartmentFoodDto;
+import com.foodifyinc.demo.repository.CompartmentFoodRepository;
 import com.foodifyinc.demo.repository.CompartmentRepository;
 import com.foodifyinc.demo.repository.FoodItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Date;
 public class CompartmentFoodValidator implements Validator {
 
     private final CompartmentRepository compartmentRepository;
+    private final CompartmentFoodRepository compartmentFoodRepository;
     private final FoodItemRepository foodItemRepository;
 
     @Override
@@ -26,6 +28,12 @@ public class CompartmentFoodValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         SaveCompartmentFoodDto dto = (SaveCompartmentFoodDto) target;
+
+        if(dto.getId() == null){
+            errors.rejectValue("id", "errors.foodItem.id.empty");
+        }else if(dto.getId() != 0 && compartmentFoodRepository.findById(dto.getId()).isEmpty()){
+            errors.rejectValue("id", "errors.foodItem.id.empty");
+        }
 
         if(compartmentRepository.findById(dto.getCompartmentId()).isEmpty()){
             errors.rejectValue("compartmentId", "errors.foodItem.compartmentId.empty");
