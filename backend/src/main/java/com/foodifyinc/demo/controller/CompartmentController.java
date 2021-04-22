@@ -4,7 +4,7 @@ import com.foodifyinc.demo.converter.CompartmentConverter;
 import com.foodifyinc.demo.domain.Compartment;
 import com.foodifyinc.demo.domain.Fridge;
 import com.foodifyinc.demo.domain.User;
-import com.foodifyinc.demo.dto.CompartmentDto;
+import com.foodifyinc.demo.dto.SaveCompartmentDto;
 import com.foodifyinc.demo.service.CompartmentService;
 import com.foodifyinc.demo.service.FridgeService;
 import com.foodifyinc.demo.service.UserService;
@@ -33,17 +33,17 @@ public class CompartmentController {
     public void initCompartmentDtoBinder(WebDataBinder webDataBinder){webDataBinder.setValidator(compartmentValidator);}
 
     @RequestMapping(value = "/api/compartment/save", method = RequestMethod.POST)
-    public ResponseEntity<?> saveCompartment(@RequestBody @Validated CompartmentDto compartmentDto, Principal principal){
+    public ResponseEntity<?> saveCompartment(@RequestBody @Validated SaveCompartmentDto saveCompartmentDto, Principal principal){
         User user = userService.findByUsernameOrThrowException(principal.getName());
         Compartment compartment;
-        Optional<Fridge> optionalFridge = fridgeService.findById(compartmentDto.getFridgeId());
+        Optional<Fridge> optionalFridge = fridgeService.findById(saveCompartmentDto.getFridgeId());
         if(optionalFridge.isPresent() && fridgeService.fridgeBelongsToUser(optionalFridge.get(), user)){
-            if(compartmentDto.getId() == null || compartmentDto.getId() == 0){
-                compartment = compartmentConverter.toEntity(compartmentDto);
+            if(saveCompartmentDto.getId() == null || saveCompartmentDto.getId() == 0){
+                compartment = compartmentConverter.toEntity(saveCompartmentDto);
             }else {
-                Optional<Compartment> oldCompartment = compartmentService.findById(compartmentDto.getId());
+                Optional<Compartment> oldCompartment = compartmentService.findById(saveCompartmentDto.getId());
                 if(oldCompartment.isPresent() && compartmentService.validateBelongsToUser(oldCompartment.get(), user)){
-                    compartment = compartmentService.update(oldCompartment.get(), compartmentDto);
+                    compartment = compartmentService.update(oldCompartment.get(), saveCompartmentDto);
                 }else {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }

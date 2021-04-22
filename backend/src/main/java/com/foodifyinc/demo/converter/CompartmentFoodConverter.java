@@ -12,7 +12,9 @@ import com.foodifyinc.demo.repository.UnitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -49,6 +51,10 @@ public class CompartmentFoodConverter {
                 unitConverter.toDto(compartmentFood.getUnit()),
                 compartmentFood.getCompartment().getId(),
                 compartmentFood.getExpirationDate());
+    }
+
+    public List<ReturnCompartmentFoodDto> toDtos(List<CompartmentFood> compartmentFoods){
+        return compartmentFoods.stream().map(this::toDto).collect(Collectors.toList());
     }
 
 }

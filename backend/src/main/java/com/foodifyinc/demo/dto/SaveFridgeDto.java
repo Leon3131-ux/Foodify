@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class FridgeDto {
+public class SaveFridgeDto {
 
     private Long id;
     private String name;

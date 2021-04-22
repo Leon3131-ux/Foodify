@@ -1,6 +1,6 @@
 package com.foodifyinc.demo.validator;
 
-import com.foodifyinc.demo.dto.FridgeDto;
+import com.foodifyinc.demo.dto.SaveFridgeDto;
 import com.foodifyinc.demo.repository.FridgeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,19 +15,19 @@ public class FridgeValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(FridgeDto.class);
+        return clazz.isAssignableFrom(SaveFridgeDto.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        FridgeDto fridgeDto = (FridgeDto) target;
+        SaveFridgeDto saveFridgeDto = (SaveFridgeDto) target;
 
-        if(fridgeDto.getId() == null){
+        if(saveFridgeDto.getId() == null){
             errors.rejectValue("id", "errors.fridge.id.empty");
-        }else if(fridgeDto.getId() != 0 && fridgeRepository.findById(fridgeDto.getId()).isEmpty()){
+        }else if(saveFridgeDto.getId() != 0 && fridgeRepository.findById(saveFridgeDto.getId()).isEmpty()){
             errors.rejectValue("id", "errors.fridge.id.empty");
         }
-        if(fridgeDto.getName() == null || fridgeDto.getName().isBlank()){
+        if(saveFridgeDto.getName() == null || saveFridgeDto.getName().isBlank()){
             errors.rejectValue("name", "errors.fridge.name.empty");
         }
     }

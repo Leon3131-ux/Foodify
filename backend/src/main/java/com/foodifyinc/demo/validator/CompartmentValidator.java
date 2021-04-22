@@ -1,6 +1,6 @@
 package com.foodifyinc.demo.validator;
 
-import com.foodifyinc.demo.dto.CompartmentDto;
+import com.foodifyinc.demo.dto.SaveCompartmentDto;
 import com.foodifyinc.demo.repository.CompartmentRepository;
 import com.foodifyinc.demo.repository.FridgeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class CompartmentValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(CompartmentDto.class);
+        return clazz.isAssignableFrom(SaveCompartmentDto.class);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        CompartmentDto dto = (CompartmentDto) target;
+        SaveCompartmentDto dto = (SaveCompartmentDto) target;
 
         if(dto.getId() == null){
             errors.rejectValue("id", "errors.compartment.id.empty");
