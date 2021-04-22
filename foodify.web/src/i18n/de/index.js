@@ -8,6 +8,7 @@ export default {
   Foodify:"Foodify",
   Home:"Home",
   kuehlschrank:"kühlschrank",
+  expirationDatebald:"Esswaren die bald verotten",
   validation: {
     required: 'Erforderlich',
     email: 'Keine gültige E-Mail',

@@ -23,10 +23,10 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in compartmentexpired" :key="index">
-              <td>{{ item.name }}</td>
-              <td>{{ item.kühlschrank }}</td>
-              <td>{{ item.amount }}</td>
-              <td>{{ item.expirationDate }}</td>
+              <td>{{ item.foodItemDto.name }}</td>
+              <td>{{ getfrige(item.compartmentId) }}</td>
+              <td>{{ item.itemAmount }} {{ item.unit }}</td>
+              <td>{{ item.expirationDate.split("T")[0].split("-")[2] }}.{{ item.expirationDate.split("T")[0].split("-")[1] }}.{{ item.expirationDate.split("T")[0].split("-")[0] }}</td>
             </tr>
           </tbody>
         </template>
@@ -41,6 +41,7 @@ export default {
   components: {},
   async mounted() {
     this.getfridges();
+    this.getexpiring();
   },
   computed: {
     header() {
@@ -78,29 +79,25 @@ export default {
   data() {
     return {
       friges: [],
-      compartmentexpired: [
-        {
-          name: "Kartoten",
-          kühlschrank: "asd",
-          amount: "14",
-          expirationDate: "12.12.2004",
-        },
-        {
-          name: "saddsa",
-          kühlschrank: "JOhni",
-          amount: "3",
-          expirationDate: "12.12.2004",
-        },
-        {
-          name: "Gurken",
-          kühlschrank: "asdasd",
-          amount: "7",
-          expirationDate: "12.12.2004",
-        },
-      ],
+      compartmentexpired: [],
     };
   },
   methods: {
+    getfrige(id) {
+      for (var frige of this.friges) {
+        for (var comp of frige.compartmentDtos) {
+          if (comp.id === id) {
+            return frige.name + " -> " + comp.name;
+          }
+        }
+      }
+    },
+    async getexpiring() {
+      let res = await axios.get("compartment/food/expiring");
+      if (res.status === 200) {
+        this.compartmentexpired = res.data;
+      }
+    },
     async getfridges() {
       let res = await axios.get("fridges");
       if (res.status === 200) {
