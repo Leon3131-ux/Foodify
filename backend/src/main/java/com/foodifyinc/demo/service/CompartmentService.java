@@ -45,5 +45,10 @@ public class CompartmentService {
         compartmentRepository.deleteInBatch(compartments);
     }
 
+    public void delete(Compartment compartment){
+        compartmentFoodService.deleteAllByCompartment(compartment);
+        compartmentRepository.delete(compartment);
+    }
+
 
 }

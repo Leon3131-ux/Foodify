@@ -51,9 +51,16 @@ public class CompartmentController {
             return new ResponseEntity<>(compartmentConverter.toDto(compartmentService.save(compartment)), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
     }
 
-
+     @RequestMapping(value = "/api/compartment/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteCompartment(@PathVariable(value = "id") Compartment compartment, Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        if(compartment.getFridge().getUser().equals(user)){
+            compartmentService.delete(compartment);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+     }
 
 }
