@@ -8,9 +8,7 @@
             <div
               class="subtitle-1 col-8"
               style="border-right: 2px solid #a49394"
-            >
-              {{ $t(item.title) }}
-            </div>
+            >{{ $t(item.title) }}</div>
             <div class="title col-4">{{ item.amount }}</div>
           </v-card-text>
         </v-card>
@@ -20,13 +18,7 @@
         <template v-slot:default>
           <thead>
             <tr>
-              <th
-                class="text-left"
-                v-for="(item, index) in header"
-                :key="index"
-              >
-                {{ item }}
-              </th>
+              <th class="text-left" v-for="(item, index) in header" :key="index">{{ item }}</th>
             </tr>
           </thead>
           <tbody>
@@ -47,14 +39,45 @@
 <script>
 export default {
   components: {},
-  async mounted() {},
+  async mounted() {
+    this.getfridges();
+  },
   computed: {
     header() {
       return ["Name", "Kühlschrank", "amount", "expirationDate"];
     },
+    cards() {
+      var res = [];
+
+      let amountKühlschrank = 0;
+      res.push({
+        title: "Anzahl kühlschranken",
+        amount: this.friges.length,
+      });
+
+      let count = 0;
+      for (let frige of this.friges) {
+        for (let comp of frige.compartmentDtos) {
+          for (let item of comp.compartmentFoodDtos) {
+            count++;
+          }
+        }
+      }
+      res.push({
+        title: "Ahnzahl Esswaren",
+        amount: count,
+      });
+
+      res.push({
+        title: "Anzahl bald verottes Essen",
+        amount: this.compartmentexpired.length,
+      });
+      return res;
+    },
   },
   data() {
     return {
+      friges: [],
       compartmentexpired: [
         {
           name: "Kartoten",
@@ -75,26 +98,15 @@ export default {
           expirationDate: "12.12.2004",
         },
       ],
-      cards: [
-        {
-          title: "Anzahl kühlschranken",
-          amount: "2",
-        },
-        {
-          title: "Ahnzahl esswaren",
-          amount: "123",
-        },
-        {
-          title: "Sontiger scheiss",
-          amount: "123",
-        },
-        {
-          title: "test",
-          amount: "123",
-        },
-      ],
     };
   },
-  methods: {},
+  methods: {
+    async getfridges() {
+      let res = await axios.get("fridges");
+      if (res.status === 200) {
+        this.friges = res.data;
+      }
+    },
+  },
 };
 </script>

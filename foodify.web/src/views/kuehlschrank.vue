@@ -1,17 +1,12 @@
 <template>
   <v-main>
     <v-btn @click="$refs.createFrigeDialog.open()">{{ $t("addfridge") }}</v-btn>
-
+    {{friges}}
     <v-row class="ma-6">
       <v-col v-for="(frige, index) in friges" :key="index">
         <v-card outlined min-height="70vh">
           <v-card-title class="headline lighten-2 row">
             <div class="col-11">{{ frige.name }}</div>
-            <div class="col-1">
-              <v-btn elevation="2" icon medium small @click="editfrige(frige)">
-                <v-icon>fas fa-edit</v-icon></v-btn
-              >
-            </div>
           </v-card-title>
 
           <hr />
@@ -19,7 +14,7 @@
           <v-virtual-scroll
             min-height="67vh"
             :item-height="virtualScrollItemHeightfixed"
-            :items="frige.compartment"
+            :items="frige.compartmentDtos"
           >
             <template v-slot="item">
               <v-card outlined>
@@ -33,41 +28,36 @@
                       small
                       @click="openeditFoodItemDialog(item.item)"
                     >
-                      <v-icon>fas fa-plus</v-icon></v-btn
-                    >
+                      <v-icon>fas fa-plus</v-icon>
+                    </v-btn>
                   </v-row>
                 </v-card-title>
-
                 <hr />
-                <draggable v-model="item.item.Fooditems" group="Fooditems">
+                <draggable
+                  v-model="item.item.compartmentFoodDtos"
+                  group="Fooditems"
+                  @change="changed"
+                >
                   <v-card
                     outlined
                     ripple
-                    v-for="(fooditem, index) in item.item.Fooditems"
+                    v-for="(fooditem, index) in item.item.compartmentFoodDtos"
                     :key="index"
                   >
                     <v-card-text>
                       <div class="row">
-                        <div class="subtitle-1 col-4">
-                          {{ fooditem.name }}
-                        </div>
-                        <div class="subtitle-1 col-3">
-                          {{ fooditem.amount }}
-                        </div>
+                        <div
+                          class="subtitle-1 col-4"
+                        >{{ fooditem.foodItemDto.name }} {{ fooditem.unit }}</div>
+                        <div class="subtitle-1 col-3">{{ fooditem.itemAmount }}</div>
                         <div class="subtitle-1 col-3">
                           {{ $t("expirationDate") }}:
-                          {{ fooditem.expirationDate }}
+                          {{ fooditem.expirationDate.split("T")[0] }}
                         </div>
                         <div class="col-1">
-                          <v-btn
-                            elevation="2"
-                            icon
-                            medium
-                            small
-                            @click="deletefooditem(fooditem)"
-                          >
-                            <v-icon>fas fa-trash</v-icon></v-btn
-                          >
+                          <v-btn elevation="2" icon medium small @click="deletefooditem(fooditem)">
+                            <v-icon>fas fa-trash</v-icon>
+                          </v-btn>
                           <v-btn
                             elevation="2"
                             icon
@@ -75,8 +65,8 @@
                             small
                             @click="editfooditem(fooditem, item.item)"
                           >
-                            <v-icon>fas fa-edit</v-icon></v-btn
-                          >
+                            <v-icon>fas fa-edit</v-icon>
+                          </v-btn>
                         </div>
                       </div>
                     </v-card-text>
@@ -102,61 +92,7 @@ export default {
   components: { createFrigeDialog, draggable, EditFoodItemDialog },
   data() {
     return {
-      friges: [
-        {
-          name: "asdad",
-          compartment: [
-            {
-              name: "John",
-              id: 1,
-              Fooditems: [
-                {
-                  name: "as11d1",
-                  amount: "0.5",
-                  expirationDate: "20.10.2130",
-                  nameid: 13,
-                },
-                {
-                  name: "asd1231",
-                  amount: "0.5",
-                  expirationDate: "20.10.2130",
-                  nameid: 13,
-                },
-                {
-                  name: "123",
-                  amount: "0.5",
-                  expirationDate: "20.10.2130",
-                  nameid: 13,
-                },
-              ],
-            },
-            {
-              name: "John",
-              id: 4,
-              Fooditems: [
-                {
-                  name: "asd1123",
-                  amount: "0.5",
-                  expirationDate: "20.10.2130",
-                  nameid: 13,
-                },
-              ],
-            },
-            { name: "John", id: 2, Fooditems: [] },
-          ],
-        },
-        {
-          name: "1123",
-
-          compartment: [
-            {
-              name: "John1123",
-              id: 123,
-              Fooditems: [],
-            },
-          ],
-        },
-      ],
+      friges: [],
     };
   },
   computed: {
@@ -164,9 +100,11 @@ export default {
       var fooditemsLength = [];
       for (var value of this.friges) {
         var complength = [];
-        if (value.compartment !== undefined) {
-          for (var comp in value.compartment) {
-            complength.push(value.compartment[comp].Fooditems.length);
+        if (value.compartmentDtos !== undefined) {
+          for (var comp in value.compartmentDtos) {
+            complength.push(
+              value.compartmentDtos[comp].compartmentFoodDtos.length
+            );
           }
           fooditemsLength.push(Math.max(...complength));
         }
@@ -185,11 +123,49 @@ export default {
     openeditFoodItemDialog(item) {
       this.$refs.editFoodItemDialog.open(item);
     },
+    async changed() {
+      for (let frige of this.friges) {
+        let res = await axios.post("fridge/save", {
+          id: frige.id,
+          name: frige.name,
+        });
+        if (res.status === 200) {
+          for (let compartment of frige.compartmentDtos) {
+            res = await axios.post("compartment/save", {
+              id: compartment.id,
+              name: compartment.name,
+              fridgeId: compartment.fridgeId,
+            });
+            if (res.status === 200) {
+              for (let food of compartment.compartmentFoodDtos) {
+                //fehlt die SaveCompartmentFoodDto
+                let datefooditem = food.expirationDate.split("T")[0].split("-");
+                res = await axios.post("compartment/food/save", {
+                  compartmentId: compartment.id,
+                  foodItemId: food.foodItemDto.id,
+                  itemAmount: food.itemAmount,
+                  unit: food.unit,
+                  expirationDate:
+                    datefooditem[2] +
+                    "/" +
+                    datefooditem[1] +
+                    "/" +
+                    datefooditem[0],
+                });
+              }
+            }
+          }
+        }
+      }
+      this.getfridges();
+    },
     editfrige(frige) {},
-    deletefooditem(item) {},
+    async deletefooditem(item) {
+      let res = await axios.delete("compartment/food/" + item.id);
+      this.getfridges();
+    },
     async getfridges() {
-      let res = await axios.get("frige/getfriges");
-
+      let res = await axios.get("fridges");
       if (res.status === 200) {
         this.friges = res.data;
       }
