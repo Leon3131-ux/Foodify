@@ -4,11 +4,14 @@
     <v-row class="ma-6">
       <v-col v-for="(frige, index) in friges" :key="index">
         <v-card outlined min-height="70vh">
-          <v-card-title class="headline lighten-2 row">
-            <div class="col-11">{{ frige.name }}</div>
-            <div>
+          <v-card-title class="headline lighten-2 row justify-space-between">
+            <div class="col-10">{{ frige.name }}</div>
+            <div class="col-2">
               <v-btn elevation="2" icon medium small @click="editfrige(frige)">
                 <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn elevation="2" icon medium small @click="deletefrige(frige)">
+                <v-icon>mdi-delete</v-icon>
               </v-btn>
             </div>
           </v-card-title>
@@ -119,6 +122,10 @@ export default {
     this.getfridges();
   },
   methods: {
+    async deletefrige(frige) {
+      let res = await axios.delete("fridge/" + frige.id);
+      this.getfridges();
+    },
     editfrige(frige) {
       this.$refs.createFrigeDialog.edit(frige);
     },

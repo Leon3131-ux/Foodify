@@ -66,7 +66,6 @@ export default {
   },
   validations: {
     frigename: { required },
-    compartmenname: { required },
   },
   methods: {
     reset() {
@@ -94,6 +93,9 @@ export default {
       this.reset();
       this.opened = true;
     },
+    async deletefrige(frige) {
+      let res = await axios.delete("fridge/" + frige.id);
+    },
     async deletecompartment(id) {
       var comp = this.compartment[id];
       if (comp.id != 0) {
@@ -114,6 +116,10 @@ export default {
       });
     },
     async createFrige() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
       let res = await axios.post("fridge/save", {
         id: this.frigeid,
         name: this.frigename,
@@ -128,6 +134,7 @@ export default {
           });
         }
       }
+      this.$v.$reset();
       this.$emit("changed");
       this.close();
     },

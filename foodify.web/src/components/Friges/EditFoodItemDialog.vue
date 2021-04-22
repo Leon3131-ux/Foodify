@@ -35,7 +35,7 @@
               offset-y
               min-width="auto"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ on, attrs}">
                 <v-text-field
                   v-model="date"
                   label="Picker in menu"
@@ -129,6 +129,10 @@ export default {
       this.opened = true;
     },
     async createFooditem() {
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
       let res = await axios.post("foodItem/save", {
         id: this.fooditemid,
         name: this.fooditemName,
@@ -144,6 +148,7 @@ export default {
           unit: this.unit,
           expirationDate: dateitem[2] + "/" + dateitem[1] + "/" + dateitem[0],
         });
+        this.$v.$reset();
         this.$emit("changed");
         this.close();
       }
