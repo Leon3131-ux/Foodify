@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="opened" width="500">
     <v-card>
-      <v-card-title class="headline lighten-2">
-        {{ $t("AddEditFrigeDialog") }}
-      </v-card-title>
+      <v-card-title class="headline lighten-2">{{ $t("AddEditFrigeDialog") }}</v-card-title>
 
       <v-card-text>
         <form-wrapper :validator="$v">
@@ -17,8 +15,8 @@
           </form-group>
           <v-row justify="end">
             <v-btn elevation="2" icon medium small @click="addcompartment">
-              <v-icon>fas fa-plus</v-icon></v-btn
-            >
+              <v-icon>fas fa-plus</v-icon>
+            </v-btn>
           </v-row>
 
           <div class="title">{{ $t("compartments") }}</div>
@@ -32,9 +30,7 @@
                 append-icon="far fa-trash-alt"
                 @click:append="deletecompartment(index)"
               >
-                <template v-slot:prepend>
-                  {{ index + 1 }}
-                </template>
+                <template v-slot:prepend>{{ index + 1 }}</template>
               </v-text-field>
             </form-group>
           </div>
@@ -46,9 +42,11 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="primary" plain @click="close">{{ $t("close") }}</v-btn>
-        <v-btn color="primary" plain @click="createFrige">{{
+        <v-btn color="primary" plain @click="createFrige">
+          {{
           $t("add")
-        }}</v-btn>
+          }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -71,16 +69,36 @@ export default {
     compartmenname: { required },
   },
   methods: {
-    close() {
+    reset() {
       this.frigename = "";
       this.compartment = [];
       this.frigeid = 0;
+    },
+    close() {
+      this.reset();
       this.opened = false;
     },
+    edit(frige) {
+      this.open();
+      this.frigeid = frige.id;
+      this.frigename = frige.name;
+      for (let comp of frige.compartmentDtos) {
+        this.compartment.push({
+          id: comp.id,
+          name: comp.name,
+          fridgeId: this.frigeid,
+        });
+      }
+    },
     open() {
+      this.reset();
       this.opened = true;
     },
-    deletecompartment(id) {
+    async deletecompartment(id) {
+      var comp = this.compartment[id];
+      if (comp.id != 0) {
+        let res = await axios.delete("compartment/" + comp.id);
+      }
       var index = -1;
       this.compartment = this.compartment.filter((x) => {
         index++;

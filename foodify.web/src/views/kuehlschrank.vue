@@ -6,6 +6,11 @@
         <v-card outlined min-height="70vh">
           <v-card-title class="headline lighten-2 row">
             <div class="col-11">{{ frige.name }}</div>
+            <div>
+              <v-btn elevation="2" icon medium small @click="editfrige(frige)">
+                <v-icon>fas fa-edit</v-icon>
+              </v-btn>
+            </div>
           </v-card-title>
 
           <hr />
@@ -45,10 +50,8 @@
                   >
                     <v-card-text>
                       <div class="row">
-                        <div
-                          class="subtitle-1 col-4"
-                        >{{ fooditem.foodItemDto.name }} {{ fooditem.unit }}</div>
-                        <div class="subtitle-1 col-3">{{ fooditem.itemAmount }}</div>
+                        <div class="subtitle-1 col-4">{{ fooditem.foodItemDto.name }}</div>
+                        <div class="subtitle-1 col-3">{{ fooditem.itemAmount }} {{ fooditem.unit }}</div>
                         <div class="subtitle-1 col-3">
                           {{ $t("expirationDate") }}:
                           {{ fooditem.expirationDate.split("T")[0] }}
@@ -116,6 +119,9 @@ export default {
     this.getfridges();
   },
   methods: {
+    editfrige(frige) {
+      this.$refs.createFrigeDialog.edit(frige);
+    },
     editfooditem(fooditem, compartment) {
       this.$refs.editFoodItemDialog.editfooditem(fooditem, compartment);
     },
