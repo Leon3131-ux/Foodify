@@ -15,6 +15,7 @@ import java.util.Date;
 @Setter
 public class SaveCompartmentFoodDto {
 
+    private Long id;
     private Long compartmentId;
     private Long foodItemId;
     private Long itemAmount;
