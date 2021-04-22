@@ -11,6 +11,8 @@ import com.foodifyinc.demo.repository.FoodItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,8 +48,12 @@ public class CompartmentFoodService {
         compartmentFoodRepository.delete(compartmentFood);
     }
 
-//    public List<FoodItem> findAllExpiringByUser(User user){
-//
-//    }
+    public List<CompartmentFood> findAllExpiringByUser(User user){
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.DATE, 30);
+        Date future = c.getTime();
+        return compartmentFoodRepository.findAllExpiringByUser(future, user);
+    }
 
 }

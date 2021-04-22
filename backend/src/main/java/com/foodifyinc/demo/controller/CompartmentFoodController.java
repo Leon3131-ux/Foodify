@@ -73,10 +73,10 @@ public class CompartmentFoodController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-//    @RequestMapping(value = "/api/compartment/food/expiring", method = RequestMethod.GET)
-//    public List<ReturnCompartmentFoodDto> getAllExpiringCompartmentFood(Principal principal){
-//        User user = userService.findByUsernameOrThrowException(principal.getName());
-//
-//    }
+    @RequestMapping(value = "/api/compartment/food/expiring", method = RequestMethod.GET)
+    public List<ReturnCompartmentFoodDto> getAllExpiringCompartmentFood(Principal principal){
+        User user = userService.findByUsernameOrThrowException(principal.getName());
+        return compartmentFoodConverter.toDtos(compartmentFoodService.findAllExpiringByUser(user));
+    }
 
 }

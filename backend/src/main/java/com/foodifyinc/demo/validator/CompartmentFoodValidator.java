@@ -51,7 +51,7 @@ public class CompartmentFoodValidator implements Validator {
             errors.rejectValue("unit", "errors.foodItem.unit.empty");
         }
 
-        if(dto.getExpirationDate() == null || dto.getExpirationDate().before(new Date())){
+        if(dto.getExpirationDate() == null){
             errors.rejectValue("expirationDate", "errors.foodItem.expirationDate.empty");
         }
 
