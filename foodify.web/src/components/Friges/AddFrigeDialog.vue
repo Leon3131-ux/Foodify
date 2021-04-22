@@ -15,7 +15,7 @@
           </form-group>
           <v-row justify="end">
             <v-btn elevation="2" icon medium small @click="addcompartment">
-              <v-icon>fas fa-plus</v-icon>
+              <v-icon>mdi-pluis</v-icon>
             </v-btn>
           </v-row>
 

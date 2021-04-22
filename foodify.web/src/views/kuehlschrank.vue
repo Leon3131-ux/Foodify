@@ -8,7 +8,7 @@
             <div class="col-11">{{ frige.name }}</div>
             <div>
               <v-btn elevation="2" icon medium small @click="editfrige(frige)">
-                <v-icon>fas fa-edit</v-icon>
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </div>
           </v-card-title>
@@ -32,7 +32,7 @@
                       small
                       @click="openeditFoodItemDialog(item.item)"
                     >
-                      <v-icon>fas fa-plus</v-icon>
+                      <v-icon>mdi-pluis</v-icon>
                     </v-btn>
                   </v-row>
                 </v-card-title>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-1">
                           <v-btn elevation="2" icon medium small @click="deletefooditem(fooditem)">
-                            <v-icon>fas fa-trash</v-icon>
+                            <v-icon>mdi-delete</v-icon>
                           </v-btn>
                           <v-btn
                             elevation="2"
@@ -67,7 +67,7 @@
                             small
                             @click="editfooditem(fooditem, item.item)"
                           >
-                            <v-icon>fas fa-edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </div>
                       </div>
