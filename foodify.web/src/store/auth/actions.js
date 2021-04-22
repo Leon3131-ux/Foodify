@@ -3,7 +3,7 @@ export const login = (context, obj) => {
     axios.defaults.headers['authorization'] = "Bearer " + obj.jwt;
 };
 export const logout = (context) => {
-    context.commit("setJWT", null);
+    context.commit("setJWT", "");
     axios.defaults.headers['authorization'] = null;
 };
 

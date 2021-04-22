@@ -1,7 +1,6 @@
 <template>
   <v-main>
     <v-btn @click="$refs.createFrigeDialog.open()">{{ $t("addfridge") }}</v-btn>
-    {{friges}}
     <v-row class="ma-6">
       <v-col v-for="(frige, index) in friges" :key="index">
         <v-card outlined min-height="70vh">
@@ -138,9 +137,9 @@ export default {
             });
             if (res.status === 200) {
               for (let food of compartment.compartmentFoodDtos) {
-                //fehlt die SaveCompartmentFoodDto
                 let datefooditem = food.expirationDate.split("T")[0].split("-");
                 res = await axios.post("compartment/food/save", {
+                  id: food.id,
                   compartmentId: compartment.id,
                   foodItemId: food.foodItemDto.id,
                   itemAmount: food.itemAmount,
@@ -159,7 +158,6 @@ export default {
       }
       this.getfridges();
     },
-    editfrige(frige) {},
     async deletefooditem(item) {
       let res = await axios.delete("compartment/food/" + item.id);
       this.getfridges();

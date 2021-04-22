@@ -97,6 +97,7 @@ export default {
     reset() {
       this.model = {};
       this.date = "";
+      this.unit = "";
       this.amount = 0;
       this.fooditemid = 0;
       this.fooditemName = "";
@@ -113,6 +114,7 @@ export default {
       this.opened = true;
     },
     editfooditem(fooditem, compartment) {
+      console.log(fooditem);
       let datefooditem = fooditem.expirationDate.split("T")[0].split("-");
       this.reset();
       this.model = compartment;
@@ -123,6 +125,7 @@ export default {
       this.fooditemName = fooditem.foodItemDto.name;
       this.fooditemid = fooditem.foodItemDto.id;
       this.unit = fooditem.unit;
+      this.id = fooditem.id;
       this.opened = true;
     },
     async createFooditem() {
@@ -134,6 +137,7 @@ export default {
         this.fooditemid = res.data.id;
         let dateitem = this.date.split("-");
         res = await axios.post("compartment/food/save", {
+          id: this.id,
           compartmentId: this.compartmentid,
           foodItemId: this.fooditemid,
           itemAmount: this.amount,
