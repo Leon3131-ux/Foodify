@@ -12,6 +12,6 @@ if (!local) {
 Vue.use(VueI18n)
 export default new VueI18n({
   locale: local,
-  fallbackLocale: 'en-us',
+  fallbackLocale: 'de',
   messages
 })

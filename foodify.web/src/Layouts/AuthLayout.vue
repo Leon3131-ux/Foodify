@@ -4,9 +4,11 @@
       <v-toolbar-title>{{ $t("Foodify") }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn v-for="item in nav" :key="item.text" plain :to="item.to">{{
+        <v-btn v-for="item in nav" :key="item.text" plain :to="item.to">
+          {{
           item.text
-        }}</v-btn>
+          }}
+        </v-btn>
         <v-btn plain @click="logout">{{ $t("Logout") }}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
@@ -45,7 +47,6 @@ export default {
       ];
       for (var id in nav) {
         var item = nav[id];
-        console.log(this.permissions);
         if (item.permissions != undefined) {
           var permitted = false;
           item.permissions.forEach((element) => {

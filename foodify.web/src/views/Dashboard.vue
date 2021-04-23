@@ -18,7 +18,7 @@
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="text-left" v-for="(item, index) in header" :key="index">{{ item }}</th>
+              <th class="text-left" v-for="(item, index) in header" :key="index">{{ $t(item) }}</th>
             </tr>
           </thead>
           <tbody>
@@ -52,7 +52,7 @@ export default {
 
       let amountKühlschrank = 0;
       res.push({
-        title: "Anzahl kühlschranken",
+        title: "Anzahlkuehlschranke",
         amount: this.friges.length,
       });
 
@@ -65,12 +65,12 @@ export default {
         }
       }
       res.push({
-        title: "Ahnzahl Esswaren",
+        title: "AhnzahlEsswaren",
         amount: count,
       });
 
       res.push({
-        title: "Anzahl bald verottes Essen",
+        title: "Anzahlbaldablaufendeesswaren",
         amount: this.compartmentexpired.length,
       });
       return res;

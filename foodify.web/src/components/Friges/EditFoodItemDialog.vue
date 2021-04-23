@@ -8,7 +8,7 @@
           <form-group name="fooditemName">
             <v-text-field
               v-model="fooditemName"
-              label="fooditemName"
+              :label="$t('fooditemName')"
               slot-scope="{ attrs }"
               v-bind="attrs"
             />
@@ -16,14 +16,19 @@
           <form-group name="unit">
             <v-text-field
               v-model="unit"
-              label="unit"
+              :label="$t('unit')"
               hint="kg"
               slot-scope="{ attrs }"
               v-bind="attrs"
             />
           </form-group>
           <form-group name="amount">
-            <v-text-field v-model="amount" label="amount" slot-scope="{ attrs }" v-bind="attrs" />
+            <v-text-field
+              v-model="amount"
+              :label="$t('amount')"
+              slot-scope="{ attrs }"
+              v-bind="attrs"
+            />
           </form-group>
           <form-group name="expirationDate">
             <v-menu
@@ -38,7 +43,7 @@
               <template v-slot:activator="{ on, attrs}">
                 <v-text-field
                   v-model="date"
-                  label="Picker in menu"
+                  :label="$t('expirationDate')"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"

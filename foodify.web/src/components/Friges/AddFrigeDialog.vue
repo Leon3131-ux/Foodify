@@ -8,7 +8,7 @@
           <form-group name="frigename">
             <v-text-field
               v-model="frigename"
-              label="frigename"
+              :label="$t('FrkuehlschrankigeName')"
               slot-scope="{ attrs }"
               v-bind="attrs"
             />
@@ -104,7 +104,6 @@ export default {
       var index = -1;
       this.compartment = this.compartment.filter((x) => {
         index++;
-        console.log(id);
         return index !== id;
       });
     },
